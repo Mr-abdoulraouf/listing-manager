@@ -49,7 +49,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 	filter {
-		includeTestsMatching "com.advinteck.pip.decaissement.CegibPipDecaissementApplicationTests"
+		includeTestsMatching "com.agency360.listing.ListingManagerApplicationTests"
 
 	}
 	testLogging.events("PASSED", "SKIPPED", "FAILED","STANDARD_OUT","STANDARD_ERROR")
