@@ -1,10 +1,22 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'org.postgresql:postgresql:42.6.0'
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.13-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'nu.studer.jooq' version '7.1.1'
 }
 
-group = 'com.360.agency'
+group = 'com.agency360.listing'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -26,10 +38,54 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
+	jooqGenerator 'org.postgresql:postgresql:42.6.0'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+clean.doFirst {
+	delete 'src/main/java/com/agency360/listing/model'
+}
+
+import org.jooq.codegen.GenerationTool
+import org.jooq.meta.jaxb.*
+
+tasks.register('generate') {
+	def outputDirectory = projectDir.toString().concat('/src/main/java')
+	def generatedPackageName = 'com.agency360.listing.model'
+	def configuration = new Configuration()
+			.withJdbc(new Jdbc()
+					.withDriver("org.postgresql.Driver")
+					.withUrl("jdbc:postgresql://localhost:5433/listing-db")
+					.withUser("postgres")
+					.withPassword("postgres"))
+			.withGenerator(new Generator()
+					.withDatabase(new Database()
+							.withName('org.jooq.meta.postgres.PostgresDatabase')
+							.withIncludes('.*')
+							.withExcludes('')
+							.withIncludeSystemSequences(true)
+							.withSchemata(
+									new SchemaMappingType()
+											.withInputSchema("public")
+							))
+					.withGenerate(new Generate()
+							.withPojos(true)
+							.withDaos(true)
+							.withSequences(true)
+							.withSpringAnnotations(true)
+							.withJooqVersionReference(false)
+					)
+					.withTarget(new Target()
+							.withPackageName(generatedPackageName)
+							.withDirectory(outputDirectory)
+							.withClean(false)));
+
+	doLast {
+		GenerationTool.generate(configuration)
+	}
 }
