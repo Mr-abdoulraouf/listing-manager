@@ -56,7 +56,7 @@ class ListingManagerApplicationTests {
 	}
 
 	@Test
-	void create_listing_with_known_dealer_should_return_success_status() {
+	void create_ad_with_known_dealer_should_return_success_status() {
 		ListingDto listing = new ListingDto();
 		listing.setDealerId(99);
 		listing.setVehicule("Toyota");
