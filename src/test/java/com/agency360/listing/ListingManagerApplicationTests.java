@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
 
+import java.util.Set;
 
 import static com.agency360.listing.model.tables.Listing.LISTING;
 
@@ -105,6 +106,28 @@ class ListingManagerApplicationTests {
 		Assert.assertNotNull(updatedListing.getBody());
 
 	}
+
+
+	@Test
+	void get_list_of_ads_by_criteria_should_return_success_status() {
+		ListingDto actualListing = new ListingDto();
+		actualListing.setDealerId(99);
+		actualListing.setVehicule("hyundai tucson");
+		actualListing.setPrice(30000L);
+		actualListing.setState("draft");
+
+		getCreatedListingId(actualListing);
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+
+		ResponseEntity<String> responseEntity = restTemplate.exchange(createURLWithPort() + "/api/listing/"+actualListing.getDealerId()+"/"+actualListing.getState(),	HttpMethod.GET, entity, String.class);
+
+		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		Assert.assertNotNull(responseEntity.getBody());
+		Assert.assertFalse(responseEntity.getBody().isEmpty());
+
+	}
+
 
 	private int getCreatedListingId(ListingDto actualListing) {
 		return dsl.insertInto(LISTING, LISTING.DEALER_ID, LISTING.VEHICULE, LISTING.PRICE, LISTING.STATE)
