@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,6 +58,11 @@ public class Listing extends TableImpl<ListingRecord> {
      * The column <code>public.listing.dealer_id</code>.
      */
     public final TableField<ListingRecord, Integer> DEALER_ID = createField(DSL.name("dealer_id"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>public.listing.vehicule</code>.
+     */
+    public final TableField<ListingRecord, String> VEHICULE = createField(DSL.name("vehicule"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.listing.price</code>.
@@ -166,11 +171,11 @@ public class Listing extends TableImpl<ListingRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, Integer, Long, LocalDateTime, String> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Integer, Integer, String, Long, LocalDateTime, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

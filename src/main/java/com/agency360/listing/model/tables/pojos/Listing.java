@@ -18,6 +18,7 @@ public class Listing implements Serializable {
 
     private Integer       id;
     private Integer       dealerId;
+    private String        vehicule;
     private Long          price;
     private LocalDateTime createdAt;
     private String        state;
@@ -27,6 +28,7 @@ public class Listing implements Serializable {
     public Listing(Listing value) {
         this.id = value.id;
         this.dealerId = value.dealerId;
+        this.vehicule = value.vehicule;
         this.price = value.price;
         this.createdAt = value.createdAt;
         this.state = value.state;
@@ -35,12 +37,14 @@ public class Listing implements Serializable {
     public Listing(
         Integer       id,
         Integer       dealerId,
+        String        vehicule,
         Long          price,
         LocalDateTime createdAt,
         String        state
     ) {
         this.id = id;
         this.dealerId = dealerId;
+        this.vehicule = vehicule;
         this.price = price;
         this.createdAt = createdAt;
         this.state = state;
@@ -72,6 +76,20 @@ public class Listing implements Serializable {
      */
     public void setDealerId(Integer dealerId) {
         this.dealerId = dealerId;
+    }
+
+    /**
+     * Getter for <code>public.listing.vehicule</code>.
+     */
+    public String getVehicule() {
+        return this.vehicule;
+    }
+
+    /**
+     * Setter for <code>public.listing.vehicule</code>.
+     */
+    public void setVehicule(String vehicule) {
+        this.vehicule = vehicule;
     }
 
     /**
@@ -122,6 +140,7 @@ public class Listing implements Serializable {
 
         sb.append(id);
         sb.append(", ").append(dealerId);
+        sb.append(", ").append(vehicule);
         sb.append(", ").append(price);
         sb.append(", ").append(createdAt);
         sb.append(", ").append(state);

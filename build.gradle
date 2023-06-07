@@ -36,6 +36,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.modelmapper:modelmapper:3.1.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	jooqGenerator 'org.postgresql:postgresql:42.6.0'
@@ -57,6 +59,12 @@ tasks.named('test') {
 
 clean.doFirst {
 	delete 'src/main/java/com/agency360/listing/model'
+}
+
+gradle.projectsEvaluated{
+
+	compileJava.dependsOn(generate)
+	test.dependsOn(generate)
 }
 
 import org.jooq.codegen.GenerationTool

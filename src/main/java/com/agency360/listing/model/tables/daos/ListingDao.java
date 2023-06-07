@@ -89,6 +89,21 @@ public class ListingDao extends DAOImpl<ListingRecord, com.agency360.listing.mod
     }
 
     /**
+     * Fetch records that have <code>vehicule BETWEEN lowerInclusive AND
+     * upperInclusive</code>
+     */
+    public List<com.agency360.listing.model.tables.pojos.Listing> fetchRangeOfVehicule(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Listing.LISTING.VEHICULE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>vehicule IN (values)</code>
+     */
+    public List<com.agency360.listing.model.tables.pojos.Listing> fetchByVehicule(String... values) {
+        return fetch(Listing.LISTING.VEHICULE, values);
+    }
+
+    /**
      * Fetch records that have <code>price BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */

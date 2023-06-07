@@ -2,11 +2,13 @@ package com.agency360.listing.service;
 
 
 
+import com.agency360.listing.dto.ListingDto;
 import com.agency360.listing.model.tables.daos.DealerDao;
 import com.agency360.listing.model.tables.daos.ListingDao;
 import com.agency360.listing.model.tables.daos.TierLimitDao;
 import com.agency360.listing.model.tables.pojos.Listing;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,12 +23,12 @@ import java.util.Set;
 public class ListingserviceImp implements ListingService{
 
     private final ListingDao listingDao;
-
+    private static final ModelMapper MODEL_MAPPER = new ModelMapper();
     Logger logger = LoggerFactory.getLogger(ListingserviceImp.class);
     @Override
-    public void create(Listing listing) {
-
-
+    public void create(ListingDto listingDto) {
+      listingDto.setState("draft");
+      listingDao.insert(MODEL_MAPPER.map(listingDto,Listing.class));
     }
 
     @Override
