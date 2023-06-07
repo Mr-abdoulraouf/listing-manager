@@ -3,6 +3,7 @@ package com.agency360.listing.service;
 
 
 import com.agency360.listing.dto.ListingDto;
+import com.agency360.listing.exception.ResourceNotFoundException;
 import com.agency360.listing.model.tables.daos.DealerDao;
 import com.agency360.listing.model.tables.daos.ListingDao;
 import com.agency360.listing.model.tables.daos.TierLimitDao;
@@ -32,8 +33,14 @@ public class ListingserviceImp implements ListingService{
     }
 
     @Override
-    public void update(Listing listing) {
-
+    public ListingDto update(Integer id,ListingDto listingDto) {
+        Listing existingListing = listingDao.fetchOptionalById(id).orElseThrow(() -> new ResourceNotFoundException("Ad not found with id: " + id));
+        existingListing.setId(listingDto.getId());
+        existingListing.setDealerId(listingDto.getDealerId());
+        existingListing.setVehicule(listingDto.getVehicule());
+        existingListing.setPrice(listingDto.getPrice());
+        listingDao.update(existingListing);
+        return listingDto;
     }
 
     @Override

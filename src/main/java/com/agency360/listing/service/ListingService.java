@@ -12,7 +12,7 @@ public interface ListingService {
 
 
     void create (ListingDto listingDto);
-    void update(Listing listing);
+    ListingDto update(Integer id, ListingDto listingDto);
     Set<Listing> getListingByDealerIdAndState(Integer dealerId, String state);
 
     void publishListing(Integer id);

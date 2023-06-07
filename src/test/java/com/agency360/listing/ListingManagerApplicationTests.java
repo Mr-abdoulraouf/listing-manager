@@ -14,15 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import static com.agency360.listing.model.tables.Listing.LISTING;
+
 
 
 @RunWith(SpringRunner.class)
@@ -82,9 +81,36 @@ class ListingManagerApplicationTests {
 		}
 	}
 
+	@Test
+	void update_existing_ad_should_return_success_status() {
+		ListingDto actualListing = new ListingDto();
+		actualListing.setDealerId(99);
+		actualListing.setVehicule("Renault");
+		actualListing.setPrice(15000L);
+		actualListing.setState("draft");
 
+		int listingId = getCreatedListingId(actualListing);
 
+		actualListing.setVehicule("Volkswagen");
+		actualListing.setPrice(10000L);
 
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<ListingDto> requestEntity = new HttpEntity<>(actualListing,headers);
+
+		ResponseEntity<ListingDto> updatedListing = restTemplate.exchange(createURLWithPort() + "/api/listing/update/" + listingId, HttpMethod.PUT, requestEntity, ListingDto.class);
+
+		Assert.assertEquals(HttpStatus.OK, updatedListing.getStatusCode());
+		Assert.assertNotNull(updatedListing.getBody());
+
+	}
+
+	private int getCreatedListingId(ListingDto actualListing) {
+		return dsl.insertInto(LISTING, LISTING.DEALER_ID, LISTING.VEHICULE, LISTING.PRICE, LISTING.STATE)
+				  .values(actualListing.getDealerId(), actualListing.getVehicule(), actualListing.getPrice(), actualListing.getState())
+				  .returningResult(LISTING.ID).fetchOneInto(Integer.class);
+	}
 
 
 }
