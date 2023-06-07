@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,21 @@ class ListingManagerApplicationTests {
 		Assert.assertNotNull(postResponse);
 		Assert.assertNotNull(postResponse.getBody());
 		Assert.assertEquals(201,postResponse.getStatusCodeValue());
+	}
+
+	@Test
+	void create_ad_with_unknown_dealer_should_throw_exception() {
+		ListingDto listing = new ListingDto();
+		listing.setDealerId(90);
+		listing.setVehicule("Mercedes");
+		listing.setPrice(15000L);
+
+
+		try {
+			 restTemplate.postForEntity(createURLWithPort() + "/api/listing/save", listing, ListingDto.class);
+		} catch (final HttpClientErrorException e) {
+			Assert.assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
+		}
 	}
 
 
