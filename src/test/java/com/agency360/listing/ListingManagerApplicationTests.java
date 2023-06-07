@@ -40,7 +40,7 @@ class ListingManagerApplicationTests {
 	@Autowired
 	private DSLContext dsl;
 	private String createURLWithPort() {
-		return "http://localhost:" + port;
+		return "http://localhost:" + port +"/api/listing";
 	}
 
 	@BeforeAll
@@ -61,7 +61,7 @@ class ListingManagerApplicationTests {
 		listing.setDealerId(99);
 		listing.setVehicule("Toyota");
 		listing.setPrice(10000L);
-		ResponseEntity<ListingDto> postResponse = restTemplate.postForEntity(createURLWithPort() + "/api/listing/save", listing, ListingDto.class);
+		ResponseEntity<ListingDto> postResponse = restTemplate.postForEntity(createURLWithPort() + "/save", listing, ListingDto.class);
 		Assert.assertNotNull(postResponse);
 		Assert.assertNotNull(postResponse.getBody());
 		Assert.assertEquals(201,postResponse.getStatusCodeValue());
@@ -76,7 +76,7 @@ class ListingManagerApplicationTests {
 
 
 		try {
-			 restTemplate.postForEntity(createURLWithPort() + "/api/listing/save", listing, ListingDto.class);
+			 restTemplate.postForEntity(createURLWithPort() + "/save", listing, ListingDto.class);
 		} catch (final HttpClientErrorException e) {
 			Assert.assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
 		}
@@ -100,7 +100,7 @@ class ListingManagerApplicationTests {
 
 		HttpEntity<ListingDto> requestEntity = new HttpEntity<>(actualListing,headers);
 
-		ResponseEntity<ListingDto> updatedListing = restTemplate.exchange(createURLWithPort() + "/api/listing/update/" + listingId, HttpMethod.PUT, requestEntity, ListingDto.class);
+		ResponseEntity<ListingDto> updatedListing = restTemplate.exchange(createURLWithPort() + "/update/" + listingId, HttpMethod.PUT, requestEntity, ListingDto.class);
 
 		Assert.assertEquals(HttpStatus.OK, updatedListing.getStatusCode());
 		Assert.assertNotNull(updatedListing.getBody());
@@ -120,11 +120,32 @@ class ListingManagerApplicationTests {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
-		ResponseEntity<String> responseEntity = restTemplate.exchange(createURLWithPort() + "/api/listing/"+actualListing.getDealerId()+"/"+actualListing.getState(),	HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange(createURLWithPort() + "/"+actualListing.getDealerId()+"/"+actualListing.getState(),	HttpMethod.GET, entity, String.class);
 
 		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		Assert.assertNotNull(responseEntity.getBody());
 		Assert.assertFalse(responseEntity.getBody().isEmpty());
+
+	}
+
+	@Test
+	void publish_existing_ad_return_success_status() {
+		ListingDto actualListing = new ListingDto();
+		actualListing.setDealerId(99);
+		actualListing.setVehicule("Audi");
+		actualListing.setPrice(30000L);
+		actualListing.setState("draft");
+
+		int listingId = getCreatedListingId(actualListing);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<Listing> requestEntity = new HttpEntity<>(null,headers);
+
+		ResponseEntity<Listing> responseEntity = restTemplate.exchange(createURLWithPort() + "/publish/"+listingId,	HttpMethod.PUT, requestEntity, Listing.class);
+
+		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+		Assert.assertNotNull(responseEntity.getBody());
 
 	}
 

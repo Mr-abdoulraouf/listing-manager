@@ -15,7 +15,7 @@ public interface ListingService {
     ListingDto update(Integer id, ListingDto listingDto);
     Set<Listing> getListingByDealerIdAndState(Integer dealerId, String state);
 
-    void publishListing(Integer id);
+    Listing publishListing(Integer id);
 
     void unpublishListing(Integer id);
 }

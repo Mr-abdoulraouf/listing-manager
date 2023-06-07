@@ -37,4 +37,10 @@ public class ListingController {
         ListingDto listing = listingService.update(listingId, listingDto);
         return ResponseEntity.ok(listing);
     }
+
+    @PutMapping("/publish/{id}")
+    public ResponseEntity<Listing> publishListing(@PathVariable(value = "id") Integer listingId) throws ResourceNotFoundException {
+        Listing listing = listingService.publishListing(listingId);
+        return ResponseEntity.ok(listing);
+    }
 }

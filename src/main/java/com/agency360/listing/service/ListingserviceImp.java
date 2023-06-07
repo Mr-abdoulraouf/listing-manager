@@ -57,8 +57,11 @@ public class ListingserviceImp implements ListingService{
     }
 
     @Override
-    public void publishListing(Integer id) {
-
+    public Listing publishListing(Integer id) {
+        Listing listing = listingDao.fetchOptionalById(id).orElseThrow(() -> new ResourceNotFoundException("Ad not found with id: " + id));
+        listing.setState("published");
+        listingDao.update(listing);
+        return  listing;
     }
 
     @Override
