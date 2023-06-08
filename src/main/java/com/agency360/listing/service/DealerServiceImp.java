@@ -24,15 +24,14 @@ public class DealerServiceImp implements DealerService{
 
     @Override
     public Dealer update(Integer id, Dealer dealer) {
-        Dealer d = dealerDao.fetchOptionalById(id).orElseThrow(() -> new ResourceNotFoundException("Dealer not found with id: "+id));
-        d.setName(dealer.getName());
-        dealerDao.update(d);
+        Dealer dealerToUpdate = dealerDao.fetchOptionalById(id).orElseThrow(() -> new ResourceNotFoundException("Dealer not found with id: "+id));
+        dealerToUpdate.setName(dealer.getName());
+        dealerDao.update(dealerToUpdate);
         return dealer;
     }
 
     @Override
     public void delete(Integer id) {
-
         dealerDao.deleteById(id);
     }
 }
