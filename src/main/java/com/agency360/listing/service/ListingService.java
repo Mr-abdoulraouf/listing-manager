@@ -17,5 +17,5 @@ public interface ListingService {
 
     Listing publishListing(Integer id);
 
-    void unpublishListing(Integer id);
+    Listing unpublishListing(Integer id);
 }

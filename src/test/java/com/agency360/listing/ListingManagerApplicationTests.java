@@ -2,13 +2,14 @@ package com.agency360.listing;
 
 import com.agency360.listing.dto.ListingDto;
 import com.agency360.listing.model.tables.daos.DealerDao;
-import com.agency360.listing.model.tables.daos.ListingDao;
 import com.agency360.listing.model.tables.pojos.Dealer;
 import com.agency360.listing.model.tables.pojos.Listing;
-import com.agency360.listing.service.ListingService;
 import org.jooq.DSLContext;
 import org.junit.Assert;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +18,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
-
-
-import java.util.Set;
 
 import static com.agency360.listing.model.tables.Listing.LISTING;
 import static com.agency360.listing.model.tables.TierLimit.TIER_LIMIT;
@@ -186,6 +184,28 @@ class ListingManagerApplicationTests {
 		ResponseEntity<Listing> responseEntity = restTemplate.exchange(createURLWithPort() + "/publish/"+listingId,	HttpMethod.PUT, requestEntity, Listing.class);
 
 		Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		Assert.assertNotNull(responseEntity.getBody());
+
+	}
+
+
+	@Test
+	void unpublish_ad_should_return_success_status() {
+		ListingDto actualListing = new ListingDto();
+		actualListing.setDealerId(97);
+		actualListing.setVehicule("Peugeot");
+		actualListing.setPrice(10000L);
+		actualListing.setState("published");
+
+		int listingId = getCreatedListingId(actualListing);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<Listing> requestEntity = new HttpEntity<>(null,headers);
+
+		ResponseEntity<Listing> responseEntity = restTemplate.exchange(createURLWithPort() + "/unpublish/"+listingId,	HttpMethod.PUT, requestEntity, Listing.class);
+
+		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		Assert.assertNotNull(responseEntity.getBody());
 
 	}

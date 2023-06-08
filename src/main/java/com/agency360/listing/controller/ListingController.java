@@ -43,4 +43,9 @@ public class ListingController {
         Listing listing = listingService.publishListing(listingId);
         return ResponseEntity.ok(listing);
     }
+    @PutMapping("/unpublish/{id}")
+    public ResponseEntity<Listing> unpublishListing(@PathVariable(value = "id") Integer listingId) throws ResourceNotFoundException {
+        Listing listing = listingService.unpublishListing(listingId);
+        return ResponseEntity.ok(listing);
+    }
 }
