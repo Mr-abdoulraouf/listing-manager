@@ -4,6 +4,7 @@ import com.agency360.listing.dto.ListingDto;
 import com.agency360.listing.model.tables.daos.DealerDao;
 import com.agency360.listing.model.tables.pojos.Dealer;
 import com.agency360.listing.model.tables.pojos.Listing;
+import com.agency360.listing.service.DealerService;
 import org.jooq.DSLContext;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
@@ -31,6 +32,9 @@ class ListingManagerApplicationTests {
 
 	@Autowired
 	DealerDao dealerDao;
+
+	@Autowired
+	DealerService dealerService;
 	@Autowired
 	private TestRestTemplate restTemplate;
 	@LocalServerPort
@@ -43,16 +47,17 @@ class ListingManagerApplicationTests {
 
 	@BeforeAll
 	public void initialize(){
+		dealerService.save(new Dealer(99,"Abdoul"));
+		dealerService.save(new Dealer(98,"Michel"));
+		dealerService.save(new Dealer(97,"Karine"));
 
-		dealerDao.insert(new Dealer(99,"Abdoul"));
-		dealerDao.insert(new Dealer(98,"Michel"));
 	}
 
 	@AfterAll
 	public void clear(){
-	  dsl.deleteFrom(LISTING).where(LISTING.DEALER_ID.in(98,99)).execute();
+	  dsl.deleteFrom(LISTING).where(LISTING.DEALER_ID.in(97,98,99)).execute();
 	  dsl.deleteFrom(TIER_LIMIT).execute();
-	  dealerDao.deleteById(99,98);
+	  dealerDao.deleteById(99,98,97);
 	}
 
 	@Test
