@@ -24,7 +24,7 @@ public class ListingController {
     @GetMapping("/{dealerId}/{state}")
     public ResponseEntity<Set<Listing>> getListingsByCriteria(@PathVariable(value = "dealerId") Integer dealerId,@PathVariable(value = "state") String state) {
         Set<Listing> listings = listingService.getListingByDealerIdAndState(dealerId, state);
-        return ResponseEntity.ok(listings);
+        return listings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(listings);
     }
     @PostMapping("/save")
     public ResponseEntity<ListingDto> createListing(@Valid @RequestBody ListingDto listingDto) throws ResourceNotFoundException {
