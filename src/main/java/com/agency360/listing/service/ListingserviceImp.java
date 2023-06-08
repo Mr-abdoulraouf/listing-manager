@@ -28,6 +28,8 @@ import static com.agency360.listing.model.tables.Listing.LISTING;
 @Service
 public class ListingserviceImp implements ListingService{
 
+    public static final String DRAFT = "draft";
+    public static final String PUBLISHED = "published";
     private final ListingDao listingDao;
     private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
@@ -35,7 +37,7 @@ public class ListingserviceImp implements ListingService{
     Logger logger = LoggerFactory.getLogger(ListingserviceImp.class);
     @Override
     public void create(ListingDto listingDto) {
-      listingDto.setState("draft");
+      listingDto.setState(DRAFT);
       listingDao.insert(MODEL_MAPPER.map(listingDto,Listing.class));
     }
 
@@ -59,7 +61,7 @@ public class ListingserviceImp implements ListingService{
     @Override
     public Listing publishListing(Integer id) {
         Listing listing = listingDao.fetchOptionalById(id).orElseThrow(() -> new ResourceNotFoundException("Ad not found with id: " + id));
-        listing.setState("published");
+        listing.setState(PUBLISHED);
         listingDao.update(listing);
         return  listing;
     }
