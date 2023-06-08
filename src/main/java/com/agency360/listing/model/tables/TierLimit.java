@@ -14,10 +14,9 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row3;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -50,11 +49,6 @@ public class TierLimit extends TableImpl<TierLimitRecord> {
     }
 
     /**
-     * The column <code>public.tier_limit.id</code>.
-     */
-    public final TableField<TierLimitRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
-
-    /**
      * The column <code>public.tier_limit.dealer_id</code>.
      */
     public final TableField<TierLimitRecord, Integer> DEALER_ID = createField(DSL.name("dealer_id"), SQLDataType.INTEGER.nullable(false), this, "");
@@ -65,14 +59,9 @@ public class TierLimit extends TableImpl<TierLimitRecord> {
     public final TableField<TierLimitRecord, Integer> LISTING_LIMIT = createField(DSL.name("listing_limit"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>public.tier_limit.who_done</code>.
+     * The column <code>public.tier_limit.created_at</code>.
      */
-    public final TableField<TierLimitRecord, String> WHO_DONE = createField(DSL.name("who_done"), SQLDataType.VARCHAR(132).nullable(false).defaultValue(DSL.field("\"current_user\"()", SQLDataType.VARCHAR)), this, "");
-
-    /**
-     * The column <code>public.tier_limit.when_done</code>.
-     */
-    public final TableField<TierLimitRecord, LocalDateTime> WHEN_DONE = createField(DSL.name("when_done"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("now()", SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<TierLimitRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field("now()", SQLDataType.LOCALDATETIME)), this, "");
 
     private TierLimit(Name alias, Table<TierLimitRecord> aliased) {
         this(alias, aliased, null);
@@ -110,11 +99,6 @@ public class TierLimit extends TableImpl<TierLimitRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Public.PUBLIC;
-    }
-
-    @Override
-    public Identity<TierLimitRecord, Integer> getIdentity() {
-        return (Identity<TierLimitRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -166,11 +150,11 @@ public class TierLimit extends TableImpl<TierLimitRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row3 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, Integer, Integer, String, LocalDateTime> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row3<Integer, Integer, LocalDateTime> fieldsRow() {
+        return (Row3) super.fieldsRow();
     }
 }

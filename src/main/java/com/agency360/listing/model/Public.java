@@ -62,8 +62,7 @@ public class Public extends SchemaImpl {
     public final List<Sequence<?>> getSequences() {
         return Arrays.asList(
             Sequences.DEALER_ID_SEQ,
-            Sequences.LISTING_ID_SEQ,
-            Sequences.TIER_LIMIT_ID_SEQ
+            Sequences.LISTING_ID_SEQ
         );
     }
 

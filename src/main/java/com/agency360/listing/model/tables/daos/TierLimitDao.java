@@ -41,36 +41,7 @@ public class TierLimitDao extends DAOImpl<TierLimitRecord, com.agency360.listing
 
     @Override
     public Integer getId(com.agency360.listing.model.tables.pojos.TierLimit object) {
-        return object.getId();
-    }
-
-    /**
-     * Fetch records that have <code>id BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchRangeOfId(Integer lowerInclusive, Integer upperInclusive) {
-        return fetchRange(TierLimit.TIER_LIMIT.ID, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>id IN (values)</code>
-     */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchById(Integer... values) {
-        return fetch(TierLimit.TIER_LIMIT.ID, values);
-    }
-
-    /**
-     * Fetch a unique record that has <code>id = value</code>
-     */
-    public com.agency360.listing.model.tables.pojos.TierLimit fetchOneById(Integer value) {
-        return fetchOne(TierLimit.TIER_LIMIT.ID, value);
-    }
-
-    /**
-     * Fetch a unique record that has <code>id = value</code>
-     */
-    public Optional<com.agency360.listing.model.tables.pojos.TierLimit> fetchOptionalById(Integer value) {
-        return fetchOptional(TierLimit.TIER_LIMIT.ID, value);
+        return object.getDealerId();
     }
 
     /**
@@ -89,6 +60,20 @@ public class TierLimitDao extends DAOImpl<TierLimitRecord, com.agency360.listing
     }
 
     /**
+     * Fetch a unique record that has <code>dealer_id = value</code>
+     */
+    public com.agency360.listing.model.tables.pojos.TierLimit fetchOneByDealerId(Integer value) {
+        return fetchOne(TierLimit.TIER_LIMIT.DEALER_ID, value);
+    }
+
+    /**
+     * Fetch a unique record that has <code>dealer_id = value</code>
+     */
+    public Optional<com.agency360.listing.model.tables.pojos.TierLimit> fetchOptionalByDealerId(Integer value) {
+        return fetchOptional(TierLimit.TIER_LIMIT.DEALER_ID, value);
+    }
+
+    /**
      * Fetch records that have <code>listing_limit BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
@@ -104,32 +89,17 @@ public class TierLimitDao extends DAOImpl<TierLimitRecord, com.agency360.listing
     }
 
     /**
-     * Fetch records that have <code>who_done BETWEEN lowerInclusive AND
+     * Fetch records that have <code>created_at BETWEEN lowerInclusive AND
      * upperInclusive</code>
      */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchRangeOfWhoDone(String lowerInclusive, String upperInclusive) {
-        return fetchRange(TierLimit.TIER_LIMIT.WHO_DONE, lowerInclusive, upperInclusive);
+    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchRangeOfCreatedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(TierLimit.TIER_LIMIT.CREATED_AT, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>who_done IN (values)</code>
+     * Fetch records that have <code>created_at IN (values)</code>
      */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchByWhoDone(String... values) {
-        return fetch(TierLimit.TIER_LIMIT.WHO_DONE, values);
-    }
-
-    /**
-     * Fetch records that have <code>when_done BETWEEN lowerInclusive AND
-     * upperInclusive</code>
-     */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchRangeOfWhenDone(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-        return fetchRange(TierLimit.TIER_LIMIT.WHEN_DONE, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>when_done IN (values)</code>
-     */
-    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchByWhenDone(LocalDateTime... values) {
-        return fetch(TierLimit.TIER_LIMIT.WHEN_DONE, values);
+    public List<com.agency360.listing.model.tables.pojos.TierLimit> fetchByCreatedAt(LocalDateTime... values) {
+        return fetch(TierLimit.TIER_LIMIT.CREATED_AT, values);
     }
 }

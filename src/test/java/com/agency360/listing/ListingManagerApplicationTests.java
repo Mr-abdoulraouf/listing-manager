@@ -22,7 +22,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.Set;
 
 import static com.agency360.listing.model.tables.Listing.LISTING;
-
+import static com.agency360.listing.model.tables.TierLimit.TIER_LIMIT;
 
 
 @RunWith(SpringRunner.class)
@@ -47,12 +47,14 @@ class ListingManagerApplicationTests {
 	public void initialize(){
 
 		dealerDao.insert(new Dealer(99,"Abdoul"));
+		dealerDao.insert(new Dealer(98,"Michel"));
 	}
 
 	@AfterAll
 	public void clear(){
-	  dsl.deleteFrom(LISTING).where(LISTING.DEALER_ID.eq(99)).execute();
-	  dealerDao.deleteById(99);
+	  dsl.deleteFrom(LISTING).where(LISTING.DEALER_ID.in(98,99)).execute();
+	  dsl.deleteFrom(TIER_LIMIT).execute();
+	  dealerDao.deleteById(99,98);
 	}
 
 	@Test
@@ -129,7 +131,7 @@ class ListingManagerApplicationTests {
 	}
 
 	@Test
-	void publish_existing_ad_return_success_status() {
+	void publish_ad_in_dealer_limit_should_return_success_status() {
 		ListingDto actualListing = new ListingDto();
 		actualListing.setDealerId(99);
 		actualListing.setVehicule("Audi");
@@ -137,6 +139,7 @@ class ListingManagerApplicationTests {
 		actualListing.setState("draft");
 
 		int listingId = getCreatedListingId(actualListing);
+		insertListingLimit(actualListing.getDealerId(),3);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -147,6 +150,48 @@ class ListingManagerApplicationTests {
 		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		Assert.assertNotNull(responseEntity.getBody());
 
+	}
+
+	@Test
+	void publish_ad_over_dealer_limit_should_return_success_status() {
+		ListingDto actualFirstListing = new ListingDto();
+		actualFirstListing.setDealerId(98);
+		actualFirstListing.setVehicule("SUZUKI");
+		actualFirstListing.setPrice(12000L);
+		actualFirstListing.setState("published");
+
+		ListingDto actualSecondListing = new ListingDto();
+		actualSecondListing.setDealerId(98);
+		actualSecondListing.setVehicule("Mazda");
+		actualSecondListing.setPrice(11000L);
+		actualSecondListing.setState("published");
+
+		ListingDto actualThirdListing = new ListingDto();
+		actualThirdListing.setDealerId(98);
+		actualThirdListing.setVehicule("Citroen");
+		actualThirdListing.setPrice(12000L);
+		actualThirdListing.setState("draft");
+
+		getCreatedListingId(actualFirstListing);
+		getCreatedListingId(actualSecondListing);
+
+		int listingId = getCreatedListingId(actualThirdListing);
+		insertListingLimit(actualFirstListing.getDealerId(),2);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		HttpEntity<Listing> requestEntity = new HttpEntity<>(null,headers);
+
+		ResponseEntity<Listing> responseEntity = restTemplate.exchange(createURLWithPort() + "/publish/"+listingId,	HttpMethod.PUT, requestEntity, Listing.class);
+
+		Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+		Assert.assertNotNull(responseEntity.getBody());
+
+	}
+
+	private void insertListingLimit(Integer dealerId,Integer dealerLimit) {
+		dsl.insertInto(TIER_LIMIT,TIER_LIMIT.DEALER_ID,TIER_LIMIT.LISTING_LIMIT).values(dealerId,dealerLimit).execute();
 	}
 
 

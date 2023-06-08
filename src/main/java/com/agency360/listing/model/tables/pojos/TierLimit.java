@@ -16,48 +16,26 @@ public class TierLimit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer       id;
     private Integer       dealerId;
     private Integer       listingLimit;
-    private String        whoDone;
-    private LocalDateTime whenDone;
+    private LocalDateTime createdAt;
 
     public TierLimit() {}
 
     public TierLimit(TierLimit value) {
-        this.id = value.id;
         this.dealerId = value.dealerId;
         this.listingLimit = value.listingLimit;
-        this.whoDone = value.whoDone;
-        this.whenDone = value.whenDone;
+        this.createdAt = value.createdAt;
     }
 
     public TierLimit(
-        Integer       id,
         Integer       dealerId,
         Integer       listingLimit,
-        String        whoDone,
-        LocalDateTime whenDone
+        LocalDateTime createdAt
     ) {
-        this.id = id;
         this.dealerId = dealerId;
         this.listingLimit = listingLimit;
-        this.whoDone = whoDone;
-        this.whenDone = whenDone;
-    }
-
-    /**
-     * Getter for <code>public.tier_limit.id</code>.
-     */
-    public Integer getId() {
-        return this.id;
-    }
-
-    /**
-     * Setter for <code>public.tier_limit.id</code>.
-     */
-    public void setId(Integer id) {
-        this.id = id;
+        this.createdAt = createdAt;
     }
 
     /**
@@ -89,42 +67,26 @@ public class TierLimit implements Serializable {
     }
 
     /**
-     * Getter for <code>public.tier_limit.who_done</code>.
+     * Getter for <code>public.tier_limit.created_at</code>.
      */
-    public String getWhoDone() {
-        return this.whoDone;
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Setter for <code>public.tier_limit.who_done</code>.
+     * Setter for <code>public.tier_limit.created_at</code>.
      */
-    public void setWhoDone(String whoDone) {
-        this.whoDone = whoDone;
-    }
-
-    /**
-     * Getter for <code>public.tier_limit.when_done</code>.
-     */
-    public LocalDateTime getWhenDone() {
-        return this.whenDone;
-    }
-
-    /**
-     * Setter for <code>public.tier_limit.when_done</code>.
-     */
-    public void setWhenDone(LocalDateTime whenDone) {
-        this.whenDone = whenDone;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("TierLimit (");
 
-        sb.append(id);
-        sb.append(", ").append(dealerId);
+        sb.append(dealerId);
         sb.append(", ").append(listingLimit);
-        sb.append(", ").append(whoDone);
-        sb.append(", ").append(whenDone);
+        sb.append(", ").append(createdAt);
 
         sb.append(")");
         return sb.toString();

@@ -31,7 +31,7 @@ public class Keys {
 
     public static final UniqueKey<DealerRecord> DEALER_PK = Internal.createUniqueKey(Dealer.DEALER, DSL.name("dealer_pk"), new TableField[] { Dealer.DEALER.ID }, true);
     public static final UniqueKey<ListingRecord> LISTING_PK = Internal.createUniqueKey(Listing.LISTING, DSL.name("listing_pk"), new TableField[] { Listing.LISTING.ID }, true);
-    public static final UniqueKey<TierLimitRecord> TIER_LIMIT_PK = Internal.createUniqueKey(TierLimit.TIER_LIMIT, DSL.name("tier_limit_pk"), new TableField[] { TierLimit.TIER_LIMIT.ID }, true);
+    public static final UniqueKey<TierLimitRecord> TIER_LIMIT_PK = Internal.createUniqueKey(TierLimit.TIER_LIMIT, DSL.name("tier_limit_pk"), new TableField[] { TierLimit.TIER_LIMIT.DEALER_ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
