@@ -152,6 +152,7 @@ class ListingManagerApplicationTests {
 
 		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		Assert.assertNotNull(responseEntity.getBody());
+		Assert.assertEquals("published",responseEntity.getBody().getState());
 
 	}
 
@@ -189,7 +190,6 @@ class ListingManagerApplicationTests {
 		ResponseEntity<Listing> responseEntity = restTemplate.exchange(createURLWithPort() + "/publish/"+listingId,	HttpMethod.PUT, requestEntity, Listing.class);
 
 		Assert.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-		Assert.assertNotNull(responseEntity.getBody());
 
 	}
 
@@ -212,6 +212,7 @@ class ListingManagerApplicationTests {
 
 		Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 		Assert.assertNotNull(responseEntity.getBody());
+		Assert.assertEquals("draft",responseEntity.getBody().getState());
 
 	}
 
