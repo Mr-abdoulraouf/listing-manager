@@ -83,7 +83,7 @@ class ListingManagerApplicationTests {
 		try {
 			 restTemplate.postForEntity(createURLWithPort() + "/save", listing, ListingDto.class);
 		} catch (final HttpClientErrorException e) {
-			Assert.assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
+			Assert.assertEquals(HttpStatus.NOT_FOUND,e.getStatusCode());
 		}
 	}
 
