@@ -104,18 +104,30 @@ gradle compileJava
 ```bash
 gradle generate
 ```
+JOOQ sources code will be generated in `src/main/java/com/agency36/listing/model`
 4. Run the application:
 ```bash
 gradle bootRun
 ```
 The REST service will be accessible at http://localhost:8080/api/.
-5. Build the application for production.
+5. The project includes unit tests to ensure the functionality of the REST service. You can run the tests by using the command below :
+```bash
+gradle test
+```
+
+6. Build the application for production.
   ```bash
 gradle build
 ```
 The build jar will be located in `build/libs/`
 
-## Explore Rest APIs
+
+## Exception Handling
+
+The REST service includes basic error handling. If an unexpected exception occurs, the service will return NOT_FOUND HTTP response with an error message.
+
+
+##  Rest APIs Endpoints
 
 The important APIs endpoints are as follows :
 
@@ -129,13 +141,3 @@ The important APIs endpoints are as follows :
     
     PUT /api/listing/unpublish/{listingId}: Unpublishes a listing by ID.
 
-# Exception Handling
-
-The REST service includes basic error handling. If an unexpected exception occurs, the service will return NOT_FOUND HTTP response with an error message.
-
-# Testing
-
-The project includes unit tests to ensure the functionality of the REST service. You can run the tests by using the command below :
-```bash
-gradle test
-```
