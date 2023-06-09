@@ -47,9 +47,9 @@ class ListingManagerApplicationTests {
 
 	@BeforeAll
 	public void initialize(){
-		dealerService.save(new Dealer(99,"Abdoul"));
-		dealerService.save(new Dealer(98,"Michel"));
-		dealerService.save(new Dealer(97,"Karine"));
+		dealerService.save(new Dealer(99,"AutoPrice Canada"));
+		dealerService.save(new Dealer(98,"Cars Canada"));
+		dealerService.save(new Dealer(97,"Auto Boom Canada"));
 
 	}
 
@@ -64,7 +64,7 @@ class ListingManagerApplicationTests {
 	void create_ad_with_known_dealer_should_return_success_status() {
 		ListingDto listing = new ListingDto();
 		listing.setDealerId(99);
-		listing.setVehicule("Toyota");
+		listing.setVehicule("Toyota Rav4 2013");
 		listing.setPrice(10000L);
 		ResponseEntity<ListingDto> postResponse = restTemplate.postForEntity(createURLWithPort() + "/save", listing, ListingDto.class);
 		Assert.assertNotNull(postResponse);
@@ -91,13 +91,13 @@ class ListingManagerApplicationTests {
 	void update_existing_ad_should_return_success_status() {
 		ListingDto actualListing = new ListingDto();
 		actualListing.setDealerId(99);
-		actualListing.setVehicule("Renault");
+		actualListing.setVehicule("Toyota Avensis 2020");
 		actualListing.setPrice(15000L);
 		actualListing.setState("draft");
 
 		int listingId = getCreatedListingId(actualListing);
 
-		actualListing.setVehicule("Volkswagen");
+		actualListing.setVehicule("Toyota Avensis 2010");
 		actualListing.setPrice(10000L);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -117,7 +117,7 @@ class ListingManagerApplicationTests {
 	void get_list_of_ads_by_criteria_should_return_success_status() {
 		ListingDto actualListing = new ListingDto();
 		actualListing.setDealerId(99);
-		actualListing.setVehicule("hyundai tucson");
+		actualListing.setVehicule("Toyota Rav4 2014");
 		actualListing.setPrice(30000L);
 		actualListing.setState("draft");
 
@@ -137,7 +137,7 @@ class ListingManagerApplicationTests {
 	void publish_ad_in_dealer_limit_should_return_success_status() {
 		ListingDto actualListing = new ListingDto();
 		actualListing.setDealerId(99);
-		actualListing.setVehicule("Audi");
+		actualListing.setVehicule("Toyota rav4 2020");
 		actualListing.setPrice(30000L);
 		actualListing.setState("draft");
 
@@ -160,19 +160,19 @@ class ListingManagerApplicationTests {
 	void publish_ad_over_dealer_limit_should_return_success_status() {
 		ListingDto actualFirstListing = new ListingDto();
 		actualFirstListing.setDealerId(98);
-		actualFirstListing.setVehicule("SUZUKI");
+		actualFirstListing.setVehicule("Mercedes ML 350");
 		actualFirstListing.setPrice(12000L);
 		actualFirstListing.setState("published");
 
 		ListingDto actualSecondListing = new ListingDto();
 		actualSecondListing.setDealerId(98);
-		actualSecondListing.setVehicule("Mazda");
+		actualSecondListing.setVehicule("Mercedes GLK");
 		actualSecondListing.setPrice(11000L);
 		actualSecondListing.setState("published");
 
 		ListingDto actualThirdListing = new ListingDto();
 		actualThirdListing.setDealerId(98);
-		actualThirdListing.setVehicule("Citroen");
+		actualThirdListing.setVehicule("Mercedes 2023");
 		actualThirdListing.setPrice(12000L);
 		actualThirdListing.setState("draft");
 
@@ -198,7 +198,7 @@ class ListingManagerApplicationTests {
 	void unpublish_ad_should_return_success_status() {
 		ListingDto actualListing = new ListingDto();
 		actualListing.setDealerId(97);
-		actualListing.setVehicule("Peugeot");
+		actualListing.setVehicule("BMW X5 2012");
 		actualListing.setPrice(10000L);
 		actualListing.setState("published");
 
