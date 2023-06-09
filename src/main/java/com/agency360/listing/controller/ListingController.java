@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ListingController {
     @GetMapping("/{dealerId}/{state}")
     public ResponseEntity<Set<Listing>> getListingsByCriteria(@PathVariable(value = "dealerId") Integer dealerId,@PathVariable(value = "state") String state) {
         Set<Listing> listings = listingService.getListingByDealerIdAndState(dealerId, state);
-        return listings.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(listings);
+        return listings.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashSet<>()) : ResponseEntity.ok(listings);
     }
     @PostMapping("/save")
     public ResponseEntity<ListingDto> createListing(@Valid @RequestBody ListingDto listingDto) throws ResourceNotFoundException {
@@ -32,19 +33,19 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(listingDto);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ListingDto> updateListing(@PathVariable(value = "id") Integer listingId, @Valid @RequestBody ListingDto listingDto) throws ResourceNotFoundException {
+    @PutMapping("/update/{listingId}")
+    public ResponseEntity<ListingDto> updateListing(@PathVariable(value = "listingId") Integer listingId, @Valid @RequestBody ListingDto listingDto) throws ResourceNotFoundException {
         ListingDto listing = listingService.update(listingId, listingDto);
         return ResponseEntity.ok(listing);
     }
 
-    @PutMapping("/publish/{id}")
-    public ResponseEntity<Listing> publishListing(@PathVariable(value = "id") Integer listingId) throws ResourceNotFoundException {
+    @PutMapping("/publish/{listingId}")
+    public ResponseEntity<Listing> publishListing(@PathVariable(value = "listingId") Integer listingId) throws ResourceNotFoundException {
         Listing listing = listingService.publishListing(listingId);
         return ResponseEntity.ok(listing);
     }
-    @PutMapping("/unpublish/{id}")
-    public ResponseEntity<Listing> unpublishListing(@PathVariable(value = "id") Integer listingId) throws ResourceNotFoundException {
+    @PutMapping("/unpublish/{listingId}")
+    public ResponseEntity<Listing> unpublishListing(@PathVariable(value = "listingId") Integer listingId) throws ResourceNotFoundException {
         Listing listing = listingService.unpublishListing(listingId);
         return ResponseEntity.ok(listing);
     }
